@@ -11,6 +11,8 @@ hello, friends this is subhankar nath.today we are learn the react.so , react is
 - [Components](#components)
 - [Add Css Styles](#add-css-style-inside-components)
 - [Inspect Page using React Developer Tools](#inspect-page)
+- [JSX](#jsx)
+- [Conditional Rendering](#conditional-rendering)
 
 
 
@@ -365,3 +367,323 @@ here we see the `App` component and its child components `Header`, `Body`, `Foot
 so,
 - **Parent Component**: `App`
 - **Child Components**: `Header`, `Body`, `Footer`
+
+## Jsx
+
+
+### 🔹 What is JSX?
+- JSX stands for JavaScript XML.
+- JSX allows us to write HTML-like code inside JavaScript.
+
+- It makes React code:
+- - ✅ Easy to read
+- - ✅ Easy to write
+- - ✅ Easy to understand
+
+### 🔹 Why JSX is Used?
+
+- Without JSX, writing UI in React is hard and confusing.
+
+❌ Without JSX (Pure JavaScript)
+```
+React.createElement(
+  "h1",
+  null,
+  "Hello React"
+);
+```
+✅ With JSX (Easy & Clean)
+
+```
+<h1>Hello React</h1>
+```
+👉 JSX is NOT HTML, but it looks like HTML.
+
+### 🔹 Important Point (Interview 🔥)
+
+JSX is converted into JavaScript by Babel before running in the browser.
+
+- Browser ❌ does not understand JSX
+- Browser ✅ understands JavaScript
+<img src="./public/jsx-to-js.png">
+
+### 🔹 First JSX Example
+```
+function App() {
+  return <h1>Hello World</h1>;
+}
+
+export default App;
+
+```
+📌 This is a React component written using JSX.
+
+### 🔹 JSX Rules
+
+- 1️⃣ JSX Must Return One Parent Element
+
+❌ Wrong
+
+```
+return (
+  <h1>Hello</h1>
+  <p>Welcome</p>
+);
+```
+
+
+✅ Correct (Using div)
+
+```
+return (
+  <div>
+    <h1>Hello</h1>
+    <p>Welcome</p>
+  </div>
+);
+```
+
+
+✅ Better (Using Fragment)
+
+```
+return (
+  <>
+    <h1>Hello</h1>
+    <p>Welcome</p>
+  </>
+);
+```
+
+- 2️⃣ Use className Instead of class
+
+❌ HTML
+
+```
+<div class="box"></div>
+```
+
+
+✅ JSX
+
+```
+<div className="box"></div> // 👈
+```
+
+
+📌 Because class is a JavaScript keyword.
+
+- 3️⃣ JavaScript Inside JSX {}
+
+You can write JavaScript expressions using {}.
+
+```
+function App() {
+  const name = "React";
+
+  return <h1>Hello {name}</h1>; // 👈
+}
+```
+
+🟢 Output:
+
+Hello React
+
+- 4️⃣ Mathematical Expressions in JSX
+
+```
+function App() {
+  return <h1>Result: {10 + 5}</h1>; // 👈
+}
+```
+🟢 Output:
+
+Result: 15
+
+- 5️⃣ Function Call Inside JSX
+```
+function App() {
+  const greet = () => "Good Morning";
+
+  return <h1>{greet()}</h1>; // 👈
+}
+```
+
+### 🔹 JSX Attributes
+```
+<img src="logo.png" alt="logo" /> // 👈
+```
+📌 Attributes are written in `camelCase`.
+
+### 🔹 Inline Styling in JSX
+
+❌ Wrong
+
+```
+<h1 style="color:red">Hello</h1>
+```
+✅ Correct
+```
+<h1 style={{ color: "red", fontSize: "20px" }}>
+  Hello
+</h1>
+```
+📌 Styles are written as JavaScript objects.
+
+### 🔹 Conditional Rendering in JSX
+Using Ternary Operator
+```
+function App() {
+  const isLoggedIn = true;
+
+  return (
+    <h1>{isLoggedIn ? "Welcome User" : "Please Login"}</h1>
+  );
+}
+```
+
+### 🔹 Rendering List Using JSX (map)
+```
+function App() {
+  const fruits = ["Apple", "Banana", "Mango"];
+
+  return (
+    <ul>
+      {fruits.map((fruit, index) => (
+        <li key={index}>{fruit}</li>
+      ))}
+    </ul>
+  );
+}
+```
+📌 key helps React identify elements efficiently.
+
+### 🔹 JSX Comments
+
+```
+{/* This is a JSX comment */}
+<h1>Hello JSX</h1>
+```
+
+### 🔹 Boolean Attributes in JSX
+```
+<button disabled>Click Me</button>
+```
+OR
+```
+<button disabled={true}>Click Me</button>
+```
+
+## Conditional Rendering
+
+here we create a file named `ConditionalRendering.jsx` inside `components` Folder.
+
+now we simply export it and call it inside `App.jsx` file. like below.
+```
+<ConditionalRendering/>
+```
+
+- ### 1️⃣🟡🟢🔴
+
+and inside `ConditionalRendering.jsx` write the below code 
+
+```
+const ConditionalRendering = () => {
+  const isLoggedIn = false;
+    return (
+      <div>
+          { isLoggedIn ? <h1>Welcome User</h1> : <h1>Please Login</h1> }
+      </div>
+    )
+};
+export default ConditionalRendering;
+```
+⭐ here we create a variable and based on the value we can show different value. here we simply check the value of `isLoggedIn`. if the `isLoggedIn` value is `true` then show `Welcome User` else `Please Login`. here we use `ternary operator`.
+
+**🔴 Syntax: `condition ? true : false;`**
+
+- ### 2️🟡🟢🔴
+
+using `and` operator. modify the code inside `ConditionalRendering.jsx` and write the below code 
+
+```
+const ConditionalRendering = () => {
+  const isLoggedIn = true;
+
+  return (
+    <div>
+        { isLoggedIn && <h1>Welcome User</h1> }
+    </div>
+  );
+};
+export default ConditionalRendering;
+```
+⭐ Here we check the isLoggedIn value.
+If isLoggedIn is `true`, then the `<h1>Welcome User</h1>` will be rendered on the screen.
+If isLoggedIn is `false`, `nothing` will be rendered.
+- `true && JSX` → JSX is shown ✅
+- `false && JSX` → nothing is shown ❌
+
+
+- ### 3️⃣🟡🟢🔴
+
+modify the `ConditionalRendering.jsx` code 
+```
+const ConditionalRendering = () => {
+  const isLoggedIn = false;
+  let message;
+
+  if (isLoggedIn) {
+    message = <h1>Welcome User</h1>;
+  } else {
+    message = <h1>Please Login</h1>;
+  }
+
+  return <div>{message}</div>;
+};
+export default ConditionalRendering;
+```
+⭐ here we create a variable and based on the value we can show different value. here we simply check the value of `isLoggedIn`. if the `isLoggedIn` value is `true` then  `Welcome User` else `Please Login` and also store the value inside `message` variable. then print it.
+
+- ### 4️⃣🟡🟢🔴
+
+Conditional Rendering with css file
+
+- - `Step:1:` create a css file named `ConditionalRendering.module.css` inside `css` Folder.
+- - `Step:2:` write the below code
+```
+.login{
+    background-color: red;
+    padding: 10px;
+}
+
+.welcome{
+    background-color: green;
+    padding: 10px;
+}
+```
+- - `Step:3:` now import the css file inside `ConditionalRendering.jsx` file.
+```
+import style from "../css/ConditionalRendering.module.css";
+```
+- - `Step:4:` now use the css file inside `ConditionalRendering.jsx` file.
+```
+<h1 className={isLoggedIn ? style.welcome : style.login}>{isLoggedIn?'Welcome User':'Please Login'}</h1>
+```
+- - `Step:5:` Full Code
+```
+import style from "../css/ConditionalRendering.module.css";
+
+const ConditionalRendering = () => {
+  const isLoggedIn = true;
+
+  return (
+    <div>
+        { <h1 className={isLoggedIn ? style.welcome : style.login}>{isLoggedIn?'Welcome User':'Please Login'}</h1>}
+    </div>
+  );
+};
+
+export default ConditionalRendering;
+```
+
