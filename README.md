@@ -13,6 +13,8 @@ hello, friends this is subhankar nath.today we are learn the react.so , react is
 - [Inspect Page using React Developer Tools](#inspect-page)
 - [JSX](#jsx)
 - [Conditional Rendering](#conditional-rendering)
+- [Array and Object](#array-and-object)
+- [Props](#props)
 
 
 
@@ -94,9 +96,8 @@ react.svg
 - Main React component
 - All other components are usually called from here
 
-```
 Example:
-
+```javascript
 function App() {
   return <h1>Hello React</h1>;
 }
@@ -123,7 +124,7 @@ Tailwind imports
 
 Example:
 
-```
+```javascript
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
 );
@@ -140,7 +141,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 - React injects everything inside this file
 
 Contains:
-```
+```html
 <div id="root"></div>
 ```
 
@@ -156,7 +157,7 @@ Contains:
 
 Example:
 
-```
+```javascript
 "scripts": {
   "dev": "vite",
   "build": "vite build"
@@ -209,7 +210,7 @@ while we can change the `dev` keyword inside scripts object from `package.json` 
 
 like, if we want to run the project with `npm start` command, then we can change the `dev` keyword to `start`.
 
-```
+```javascript
 "scripts": {
   "start": "vite", // 👈
   "build": "vite build"
@@ -250,7 +251,7 @@ here i put the below code inside `Body.jsx` file.
 - ⭐⭐ here i type `rafce` which gives me a react export function. 
 `rafce: react arrow function components export`
 
-```
+```javascript
 const Body = () => {
   return (
     <div>
@@ -266,7 +267,7 @@ export default Body
 like that you have to create rest two componets and export them.
 
 - 1️⃣ Header.jsx
-```
+```javascript
 const Header = () => {
   return (
     <div>
@@ -284,7 +285,7 @@ export default Header
 ```
 
 - 2️⃣ Body.jsx
-```
+```javascript
 const Body = () => {
   return (
     <div>
@@ -299,7 +300,7 @@ export default Body
 ```
 
 - 3️⃣ Footer.jsx
-```
+```javascript
 const Footer = () => {
   return (
     <div>
@@ -315,7 +316,7 @@ export default Footer
 call all the components inside `App.jsx` file.
 ⭐ don't forget to import the component file at the top.
 
-```
+```javascript
 import Body from "./components/Body" // 👈👈
 import Footer from "./components/Footer" // 👈👈
 import Header from "./components/Header" // 👈👈
@@ -339,7 +340,7 @@ export default App
 we just use `style` attribute inside html element. like this 👉 `style={{display: "flex", gap: "15px", listStyle: "none"}}`
 
 Example-
- ```
+ ```html
 <div style={{backgroundColor: "#e0fabeff", padding: "10px",border: "1px solid #ccc",textAlign: "center"}}>
         <p>--------------------</p>
 </div>
@@ -347,12 +348,12 @@ Example-
 
  to write css style inside `jsx` we have to use `{{ }}` and also write all the css property using `👉CamelCase` like `backgroundColor` instead of `background-color`
 
- ```
+ ```css
  backgroundColor✅
  background-color❌
  ```
 
- ```
+ ```css
 style={{backgroundColor: "#e0fabeff"}}✅
 style={background-color: "#e0fabeff"}❌
 ```
@@ -385,7 +386,7 @@ so,
 - Without JSX, writing UI in React is hard and confusing.
 
 ❌ Without JSX (Pure JavaScript)
-```
+```javascript
 React.createElement(
   "h1",
   null,
@@ -394,7 +395,7 @@ React.createElement(
 ```
 ✅ With JSX (Easy & Clean)
 
-```
+```html
 <h1>Hello React</h1>
 ```
 👉 JSX is NOT HTML, but it looks like HTML.
@@ -408,13 +409,12 @@ JSX is converted into JavaScript by Babel before running in the browser.
 <img src="./public/jsx-to-js.png">
 
 ### 🔹 First JSX Example
-```
+```javascript
 function App() {
   return <h1>Hello World</h1>;
 }
 
 export default App;
-
 ```
 📌 This is a React component written using JSX.
 
@@ -424,7 +424,7 @@ export default App;
 
 ❌ Wrong
 
-```
+```javascript
 return (
   <h1>Hello</h1>
   <p>Welcome</p>
@@ -434,7 +434,7 @@ return (
 
 ✅ Correct (Using div)
 
-```
+```javascript
 return (
   <div>
     <h1>Hello</h1>
@@ -446,7 +446,7 @@ return (
 
 ✅ Better (Using Fragment)
 
-```
+```javascript
 return (
   <>
     <h1>Hello</h1>
@@ -459,14 +459,14 @@ return (
 
 ❌ HTML
 
-```
+```html
 <div class="box"></div>
 ```
 
 
 ✅ JSX
 
-```
+```html
 <div className="box"></div> // 👈
 ```
 
@@ -477,7 +477,7 @@ return (
 
 You can write JavaScript expressions using {}.
 
-```
+```javascript
 function App() {
   const name = "React";
 
@@ -491,7 +491,7 @@ Hello React
 
 - 4️⃣ Mathematical Expressions in JSX
 
-```
+```javascript
 function App() {
   return <h1>Result: {10 + 5}</h1>; // 👈
 }
@@ -501,7 +501,7 @@ function App() {
 Result: 15
 
 - 5️⃣ Function Call Inside JSX
-```
+```javascript
 function App() {
   const greet = () => "Good Morning";
 
@@ -510,7 +510,7 @@ function App() {
 ```
 
 ### 🔹 JSX Attributes
-```
+```css
 <img src="logo.png" alt="logo" /> // 👈
 ```
 📌 Attributes are written in `camelCase`.
@@ -519,11 +519,11 @@ function App() {
 
 ❌ Wrong
 
-```
+```css
 <h1 style="color:red">Hello</h1>
 ```
 ✅ Correct
-```
+```javascript
 <h1 style={{ color: "red", fontSize: "20px" }}>
   Hello
 </h1>
@@ -532,7 +532,7 @@ function App() {
 
 ### 🔹 Conditional Rendering in JSX
 Using Ternary Operator
-```
+```javascript
 function App() {
   const isLoggedIn = true;
 
@@ -543,7 +543,7 @@ function App() {
 ```
 
 ### 🔹 Rendering List Using JSX (map)
-```
+```javascript
 function App() {
   const fruits = ["Apple", "Banana", "Mango"];
 
@@ -566,11 +566,11 @@ function App() {
 ```
 
 ### 🔹 Boolean Attributes in JSX
-```
+```javascript
 <button disabled>Click Me</button>
 ```
 OR
-```
+```javascript
 <button disabled={true}>Click Me</button>
 ```
 
@@ -587,7 +587,7 @@ now we simply export it and call it inside `App.jsx` file. like below.
 
 and inside `ConditionalRendering.jsx` write the below code 
 
-```
+```javascript
 const ConditionalRendering = () => {
   const isLoggedIn = false;
     return (
@@ -606,7 +606,7 @@ export default ConditionalRendering;
 
 using `and` operator. modify the code inside `ConditionalRendering.jsx` and write the below code 
 
-```
+```javascript
 const ConditionalRendering = () => {
   const isLoggedIn = true;
 
@@ -628,7 +628,7 @@ If isLoggedIn is `false`, `nothing` will be rendered.
 - ### 3️⃣🟡🟢🔴
 
 modify the `ConditionalRendering.jsx` code 
-```
+```javascript
 const ConditionalRendering = () => {
   const isLoggedIn = false;
   let message;
@@ -651,7 +651,7 @@ Conditional Rendering with css file
 
 - - `Step:1:` create a css file named `ConditionalRendering.module.css` inside `css` Folder.
 - - `Step:2:` write the below code
-```
+```css
 .login{
     background-color: red;
     padding: 10px;
@@ -663,15 +663,15 @@ Conditional Rendering with css file
 }
 ```
 - - `Step:3:` now import the css file inside `ConditionalRendering.jsx` file.
-```
+```javascript
 import style from "../css/ConditionalRendering.module.css";
 ```
 - - `Step:4:` now use the css file inside `ConditionalRendering.jsx` file.
-```
+```javascript
 <h1 className={isLoggedIn ? style.welcome : style.login}>{isLoggedIn?'Welcome User':'Please Login'}</h1>
 ```
 - - `Step:5:` Full Code
-```
+```javascript
 import style from "../css/ConditionalRendering.module.css";
 
 const ConditionalRendering = () => {
@@ -687,3 +687,254 @@ const ConditionalRendering = () => {
 export default ConditionalRendering;
 ```
 
+## Array and Object 
+
+we can print the array using `map` function and print the object using `dot(.)`.
+
+### Map Syntax
+```javascript
+array.map((value,index)=>(
+    <li key={index}>{value}</li>
+))
+```
+
+### Object Syntax
+```javascript
+object.key
+```
+
+we can create a component  and pass array and object as a props.
+
+Component File - `Array_Object.jsx` and paste the below code.
+
+```javascript
+const Array_Object = ({skills,user}) => {
+  return (
+    <div>
+        <h1>Array Print</h1>
+        <ul>
+            {
+                skills.map((value,index)=>(
+                    <li key={index}>{value}</li>
+                ))
+            }
+        </ul>
+        <h1>Object Print</h1>
+        <p>{user.name} , {user.age} years old.</p>
+    </div>
+  )
+}
+
+export default Array_Object
+```
+
+call the Component File inside `App.jsx` file and paste the below code.
+```javascript
+import Array_Object from "./components/Array_Object"
+
+<Array_Object skills={['html','css','javascript']} user={{name:'subhankar',age:22}} />
+```
+> 🟡 here we use `Props` to pass data - [Click here to know more about Props](#props)
+
+
+
+## Props
+
+in react props are properties,using props we can pass data from one component to another component.
+here we create three file named.
+
+1. [SimpleProps.jsx](#simplepropsjsx)
+2. [AdvanceProps.jsx](#advancepropsjsx)
+3. [StudentInfoProps.jsx](#studentinfopropsjsx)
+
+>⭐ Props are basically `Object`.
+> ⭐⭐ Props are `Immutable` means we can't change the props value.
+
+> ---
+> ---
+
+
+### SimpleProps.jsx
+
+- `Step:1: Create a Component`
+
+add the below code inside `SimpleProps.jsx` file. here we recive a `props` as a parameter. which is a Javascript Object. we can access the data using dot(.) notation.
+```javascript
+const SimpleProps = (props) => {
+  return (
+    <div>
+        <h1>Name: {props.name} - Age:{props.age} - City:{props.city}</h1>
+    </div>
+  )
+}
+
+export default SimpleProps
+```
+
+- `Step:2: Call the Component`
+
+call the component inside `App.jsx` file and paste the below code.
+```javascript
+import SimpleProps from "./components/SimpleProps"
+
+<SimpleProps name="subhankar" age="22" city="kolkata"/>
+```
+
+> ---
+> ---
+
+### AdvanceProps.jsx
+
+- `Step:1: Create a Component`
+
+add the below code inside `AdvanceProps.jsx` file. here we recive a `name,age,city,hobbies` as a parameter. actually we use `destructuring` to get the value.
+
+**`📌destructuring`** : Object destructuring allows you to extract properties from an object and assign them to variables. The order of variables does not matter, but their names typically must match the property names. 
+
+Example: 
+```javascript
+const {name,age,city,hobbies} = props
+```
+
+```javascript
+const AdvanceProps = ({name,age,city,hobbies}) => {
+  return (
+    <div>
+        <h1>Name: {name}</h1>
+        <p>Age: {age}</p>
+        <p>City: {city}</p>
+        <p>Hobbies: </p>
+        <ul>
+            {
+                hobbies.map((hobby,index)=>(
+                    <li key={index}>{hobby}</li>
+                ))
+            }
+        </ul>
+    </div>
+  )
+}
+
+export default AdvanceProps
+```
+> 🟡 for `map` function [Click here](#array-and-object)
+
+- `Step:2: Call the Component`
+
+call the component inside `App.jsx` file and paste the below code.
+```javascript
+import AdvanceProps from "./components/AdvanceProps"
+
+<AdvanceProps name="subhankar" age="22" city="kolkata" hobbies={['coding','playing games','swimming']}/>
+```
+
+> ---
+> ---
+
+### StudentInfoProps.jsx
+
+> in this component we show the student information such as `name`, `id` , `roll` , `hobbies` and `subjects`. which is typically complex data.
+
+> here we see how to pass 
+> 1. String Data
+> 2. Number Data
+> 3. Array Data
+> 4. Object Data
+
+- `Step:1: Create a Component`
+
+add the below code inside `StudentInfoProps.jsx` file. here we recive a `student_id,name,roll,hobbies,subjects` as a parameter. actually we use `object destructuring` to get all the value.
+
+[📌 what is Object Destructuring](#advancepropsjsx)
+
+```javascript
+const StudentInfoProps = ({student_id,name,roll,hobbies,subjects}) => {
+  return (
+    <div style={{border:"2px solid gray",margin:"10px",padding:"10px",borderRadius:"10px"}}>
+        <h1>Student Info</h1>
+        <p>Student ID: {student_id}</p>
+        <p>Name: {name}</p>
+        <p>Roll: {roll}</p>
+        <p>Hobbies: {
+                      hobbies.map((hobby)=>(<span style={{marginRight:"10px",backgroundColor:"yellow",padding:"5px",borderRadius:"5px"}}>{hobby}</span>))
+                    }
+        </p>
+        <div>
+          <p>Marks: </p> 
+          <ul>
+            {
+              subjects.map((subject,index)=>(
+                <li key={index}>{subject.name} - {subject.marks}</li>
+              ))
+            }
+          </ul>
+        </div>
+    </div>
+  )
+}
+
+export default StudentInfoProps
+```
+> 🟡 for `map` function [👉 Click here](#array-and-object)
+
+- `Step:2: Call the Component`
+
+call the component inside `App.jsx` file and paste the below code.
+
+> here first we take some students information and store as array of object.
+```javascript
+import StudentInfoProps from "./components/StudentInfoProps"
+
+const StudentsData=[
+    {
+      student_id:1,
+      name:"Salman Khan",
+      roll:12,
+      hobbies:["Acting","Playing games","Fighting"],
+      subjects:[
+        {name:"math",marks:35},
+        {name:"science",marks:45},
+        {name:"english",marks:90}
+      ]
+    },
+    {
+      student_id:2,
+      name:"Amir Khan",
+      roll:20,
+      hobbies:["Acting","Reading books","Swimming"],
+      subjects:[
+        {name:"math",marks:90},
+        {name:"science",marks:55},
+        {name:"english",marks:70}
+      ]
+    },
+    {
+      student_id:3,
+      name:"Arijit Singh",
+      roll:33,
+      hobbies:["Singing","Playing Guiter","Helping Others"],
+      subjects:[
+        {name:"math",marks:78},
+        {name:"science",marks:65},
+        {name:"english",marks:87}
+      ]
+    }
+  ]
+
+
+// inside return 
+{
+    StudentsData.map((student_data)=>(
+          <StudentInfoProps 
+                     student_id={student_data.student_id} 
+                     name={student_data.name} 
+                     roll={student_data.roll} 
+                     hobbies={student_data.hobbies} 
+                     subjects={student_data.subjects}
+          />
+    ))
+}
+```
+
+> ---
+> ---
