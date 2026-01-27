@@ -15,6 +15,7 @@ hello, friends this is subhankar nath.today we are learn the react.so , react is
 - [Conditional Rendering](#conditional-rendering)
 - [Array and Object](#array-and-object)
 - [Props](#props)
+- [Function and Events](#function-and-events)
 
 
 
@@ -230,12 +231,16 @@ download the react developement tool from the react official website [👉click 
 
 ## Components
 
-<img src="./public/component-flow.png">
+In React, a `component` is an `independent, reusable building block` of the user interface (UI). Components are like `JavaScript functions` that accept optional inputs called `"props"` (properties) and `return React elements` describing what should appear on the `screen`, typically using JSX markup.
+
+<img src="./public/component.png">
 
 here we craete three componenet files inside components folder.
 - Header.jsx
 - Body.jsx
 - Footer.jsx
+
+<img src="./public/component-flow.png">
 
 ⭐⭐⭐ here we use `jsx` syntax. which is a `extension of javascript`.means we can `write html inside javascript`. but it is not mandatory to use jsx. we can also use plain javascript.
 
@@ -882,7 +887,7 @@ export default StudentInfoProps
 call the component inside `App.jsx` file and paste the below code.
 
 > here first we take some students information and store as array of object.
-```javascript
+```jsx
 import StudentInfoProps from "./components/StudentInfoProps"
 
 const StudentsData=[
@@ -938,3 +943,194 @@ const StudentsData=[
 
 > ---
 > ---
+
+## Function and Events
+
+> `Funtion : ` is a `Reusable block of code` that perform a specific task. function can return a value of all types (number,string,function,array,object) or not. if a function dont return any value then its called `void function` means dont return any value.
+
+
+inside component we can create function, and also call the function.
+here we take a example that return the user name in uppercase.
+
+```jsx
+// define function 👇
+ const getName = (fname, lname) => {
+            return (fname + " " + lname).toUpperCase();
+        };
+
+
+// call the function 👇
+<h2>{getName("Amir", "Khan")}</h2>
+```
+
+> **Events** are the actions that can be performed by the user.  
+- In JavaScript there are many events like that; in React we use **all** of them (and more).  
+- In React, events are written in **CamelCase** (e.g. `onClick` instead of `onclick`).
+
+React uses **Synthetic Events** — a cross-browser wrapper around the browser's native events.  
+This makes events behave consistently across different browsers.
+
+You attach event handlers directly in JSX like this:
+
+```jsx
+<button onClick={()=>alert('Button Clicked')}>Click me</button>
+```
+
+> Full Code:
+- Step:1 : Create a Component named `FunctionEvent.jsx` and paste the below code👇.
+```jsx
+const FunctionEvent = () => {
+
+    const getName = (fname, lname) => { // its a funtion
+            return (fname + " " + lname).toUpperCase();
+        };
+
+    const doubleClickHandelar=()=>{
+        alert('Double Clicked');
+    }
+
+  return (
+    <div style={{padding:"10px"}}>
+      <h2>{getName("Amir", "Khan")}</h2> {/*here we call function*/}
+      <button onClick={()=>alert('Button Clicked')}>Click</button>
+      <button onDoubleClick={doubleClickHandelar}>Double Click</button>
+    </div>
+  );
+};
+
+export default FunctionEvent;
+```
+- Step:2 : call the component inside `app.jsx`
+```jsx
+import FunctionEvent from "./components/FunctionEvent"
+
+<FunctionEvent/>
+```
+
+Full List of Supported React Event Handlers (Synthetic Events)
+React normalizes and supports the following event types (bubbling phase by default).
+You can use the Capture version of any event by adding Capture at the end (e.g. onClickCapture, onFocusCapture).
+
+> Event names always start with `on` followed by the `event name in CamelCase`.
+
+1. Clipboard Events
+
+    - onCopy
+    - onCut
+    - onPaste
+
+2. Composition Events
+
+    - onCompositionEnd
+    - onCompositionStart
+    - onCompositionUpdate
+
+3. Focus Events
+
+    - `onFocus` → element receives focus
+    - `onBlur` → element loses focus
+
+4. Form Events
+
+    - `onChange` → input, select, textarea value changes (most used for forms)
+    - onInput
+    - onInvalid
+    - onReset
+    - `onSubmit` → form is submitted
+
+5. Generic Events
+
+    - onError
+    - onLoad
+
+6. Keyboard Events
+
+    - `onKeyDown` → key pressed down
+    - `onKeyUp` → key released
+
+7. Mouse Events
+
+    - `onClick` → when element is clicked
+    - onContextMenu
+    - `onDoubleClick` → when element is double-clicked
+    - onDrag
+    - onDragEnd
+    - onDragEnter
+    - onDragExit
+    - onDragLeave
+    - onDragOver
+    - onDragStart
+    - onDrop
+    - onMouseDown → mouse button pressed
+    - `onMouseEnter` → mouse enters the element
+    - `onMouseLeave` → mouse leaves the element
+    - onMouseMove → mouse moves over the element
+    - onMouseOut → mouse moves out of the element
+    - `onMouseOver` → mouse hovers over (bubbles)
+    - onMouseUp → mouse button is released
+
+8. Pointer Events
+
+    - onPointerCancel
+    - onPointerDown
+    - onPointerEnter
+    - onPointerLeave
+    - onPointerMove
+    - onPointerOut
+    - onPointerOver
+- onPointerUp
+
+9. Selection Events
+
+    - onSelect
+
+10. Touch Events
+    - onTouchCancel
+    - onTouchEnd
+    - onTouchMove
+    - onTouchStart
+
+11. UI Events
+    - onScroll
+    - onWheel
+
+12. Wheel Events
+    - onWheel
+
+13. Media Events
+
+    - onAbort
+    - onCanPlay
+    - onCanPlayThrough
+    - onDurationChange
+    - onEmptied
+    - onEncrypted
+    - onEnded
+    - onError
+    - onLoadedData
+    - onLoadedMetadata
+    - onLoadStart
+    - onPause
+    - onPlay
+    - onPlaying
+    - onProgress
+    - onRateChange
+    - onSeeked
+    - onSeeking
+    - onStalled
+    - onSuspend
+    - onTimeUpdate
+    - onVolumeChange
+    - onWaiting
+
+14. Image Events
+    - onLoad
+    - onError
+
+15. Animation Events
+    - onAnimationStart
+    - onAnimationEnd
+    - onAnimationIteration
+
+16. Transition Events
+    - onTransitionEnd
