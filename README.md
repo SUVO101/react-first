@@ -16,6 +16,11 @@ hello, friends this is subhankar nath.today we are learn the react.so , react is
 - [Array and Object](#array-and-object)
 - [Props](#props)
 - [Function and Events](#function-and-events)
+- [State](#state)
+    - [Props vs State](#props-vs-state)
+    - [Types of State](#types-of-state)
+    - [useState()](#what-is-usestate)
+    - [Form Handling](#form-handling)
 
 
 
@@ -963,7 +968,8 @@ here we take a example that return the user name in uppercase.
 <h2>{getName("Amir", "Khan")}</h2>
 ```
 
-> **Events** are the actions that can be performed by the user.  
+> **Events** : are the `actions` that can be `performed by the user`. Example- `Click,Mouse Hover ` 
+
 - In JavaScript there are many events like that; in React we use **all** of them (and more).  
 - In React, events are written in **CamelCase** (e.g. `onClick` instead of `onclick`).
 
@@ -1134,3 +1140,392 @@ You can use the Capture version of any event by adding Capture at the end (e.g. 
 
 16. Transition Events
     - onTransitionEnd
+
+
+## State
+
+> 🔹 What is State in React?
+
+**State** is a built-in object in React that is used to **store and manage data that can change over time**.
+
+> - When state changes, React **re-renders the component automatically**.
+> - State is a `JavaScript object` that is used to `store data` that can `change over time`.
+> - State is a `private` to the component and cannot be accessed from outside the component.
+> - State is a `mutable` and can be `changed` by the component itself.
+> - State is a `synchronous` and can be `changed` by the component itself.
+> - State is a `asynchronous` and can be `changed` by the component itself.
+---
+
+🔹 Why Do We Need State?
+
+We use state when:
+- Data changes after user interaction
+- UI needs to update dynamically
+- Values are not fixed
+
+### Example:
+- Button click counter
+- Login / Logout status
+- Form input values
+
+### Props vs State
+
+| Props | State | 
+| :--- | :--- |
+| Props are `read-only` | State is `mutable` |
+| Props are `immutable` | State is `mutable` means it can be `changed` |
+| Props are passed from `parent to child` | State is managed `inside the component` |
+| Props are used for `data passing` | State is used for `data management` |
+| Props are like `parameter` passed to the function | State is like `variable` declared in function |
+
+---
+### Types of State
+<img src="./public/types-of-states.png" />
+
+
+### What is `useState`?
+
+`useState` is a **React Hook** that allows functional components to have state.
+
+> Hooks were introduced to use state without class components.
+
+---
+
+### 🔹 Syntax of `useState`
+
+<img src="./public/useState.png" />
+
+
+### Example- 1:
+
+- create a `Counter.jsx` component and paste the below code.
+
+```jsx
+import { useState } from 'react'
+
+const Counter = () => {
+    const [count,setCount]=useState(0);
+  return (
+    <div style={{padding:"10px",display:"flex",gap:"10px"}}>
+        <button onClick={()=>setCount(count+1)}>Increment Count: {count} </button>
+        <button onClick={()=>setCount(count-1)}>Decrement Count: {count} </button>
+    </div>
+  )
+}
+
+export default Counter
+```
+
+- here , we create a counter component and use `useState` hook to manage the state of the counter.when the user click on the button the state will be changed and the component will be re-rendered.
+
+- call it inside `app.jsx`
+```jsx
+import Counter from "./components/Counter"
+
+<Counter/>
+```
+
+### Example- 2:
+
+- create a `LiveTextPrint.jsx` component and paste the below code.
+```jsx
+import { useState } from 'react'
+
+const LiveTextPrint = () => {
+
+const [text,setText]=useState('');
+
+  return (
+    <div style={{padding:'10px'}}>
+        <p>{text}</p>
+        <input type="text" onChange={(e)=>setText(e.target.value)} value={text}/>
+    </div>
+  )
+}
+
+export default LiveTextPrint
+```
+- call it inside `app.jsx`
+```jsx
+import LiveTextPrint from "./components/LiveTextPrint"
+
+<LiveTextPrint/>
+```
+
+## Form Handling
+<img src="./public/form.png">
+<img src="./public/form2.png">
+
+now, with the help of `useState` we can handle the form.
+first as it is we create a component named `Form.jsx`, although i create it inside `Form` Folder.
+
+- Folder Structure
+
+forms<br/>
+    ├── Form.jsx<br/>
+    └── Form.module.css<br/>
+
+inside `Form.jsx ` paste the below code.
+```jsx
+import { useState } from 'react'
+import styles from './Form.module.css'
+
+const Form = () => {
+
+  const [form,setForm]=useState({
+    name:"",
+    age:18,
+    date:new Date().toISOString().split('T')[0],
+    gender:"male",
+    hobby:[],
+    country:"india",
+    file:null,
+  })
+
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    console.log(form);
+  }
+
+  const handleHobby=(e)=>{
+    const {value,checked}=e.target;
+    setForm((prev)=>{
+      if(checked){
+      // add item
+      if(!form.hobby.includes(value)){
+         return {...prev,hobby:[...prev.hobby,value]} 
+      }
+      // if already exists return previous state
+      return prev;
+    }else{
+      // remove item
+      return { ...prev, hobby:prev.hobby.filter((item)=>item!==value)}
+    }
+    })
+  }
+
+  return (
+    <div style={{ padding: "10px", border: "1px solid gray" }}>
+      <form onSubmit={handleSubmit}>
+        <label>
+            Enter Name: 
+            <input 
+              type="text"
+              name="name" 
+              value={form.name} 
+              onChange={(e)=>setForm({...form,name:e.target.value})}/>
+        </label>
+        <br />
+        <label>
+            Enter Age: 
+            <input 
+              type="number" 
+              min={18}
+              max={80}
+              value={form.age} 
+              onChange={(e)=>setForm({...form,age:e.target.value})}
+            />
+        </label>
+        <br />
+        <label>
+            Enter D.O.B: 
+            <input 
+              type="date" 
+              name="date"
+              value={form.date} 
+              onChange={(e)=>setForm({...form,date:e.target.value})}
+            />
+        </label>
+        <br />
+        <label>
+            Select Gender: 
+          <input 
+            type="radio" 
+            name="gender" 
+            value="male" 
+            checked={form.gender==="male"}
+            onChange={(e)=>setForm({...form,gender:e.target.value})}
+            />
+          Male
+          <input 
+            type="radio" 
+            name="gender" 
+            value="female" 
+            checked={form.gender==="female"}
+            onChange={(e)=>setForm({...form,gender:e.target.value})}
+            />
+          Female
+        </label>
+        <br />
+        <label>
+            Select Hobbies: 
+          <input 
+            type="checkbox" 
+            name="hobby" 
+            value="reading" 
+            checked={form.hobby.includes("reading")}
+            onChange={handleHobby}
+          />
+          Reading
+          <input 
+            type="checkbox" 
+            name="hobby" 
+            value="traveling"
+            checked={form.hobby.includes("traveling")}
+            onChange={handleHobby}
+           />
+          Traveling
+          <input 
+            type="checkbox" 
+            name="hobby" 
+            value="sports" 
+            checked={form.hobby.includes("sports")}
+            onChange={handleHobby}
+          />
+          Sports
+        </label>
+        <br />
+        <label>
+            Select Country: 
+          <select name="country" value={form.country} onChange={(e)=>setForm({...form,country:e.target.value})}>
+            <option value="india">India</option>
+            <option value="usa">USA</option>
+            <option value="uk">UK</option>
+          </select>
+        </label>
+        <br />
+        <label>
+          <img src={form.file ? URL.createObjectURL(form.file) : null} alt="no image" width={100} height="auto" style={{border:"1px solid black",marginTop:"10px"}} />
+          <input type="file" name="file" accept='image/*' onChange={(e)=>setForm({...form,file:e.target.files[0]})}/>
+        </label>
+        <br />
+        <div className={styles.btn}>
+            <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+export default Form
+```
+
+> Understand the logic
+
+- 1. first we take a state variable named `form` and initilize it with an `object` with some default value.
+```jsx
+const [form,setForm]=useState({
+    name:"Guest",                                           // 👈 Default value
+    age:18,                                                 // 👈 Default value
+    date:new Date().toISOString().split('T')[0],           // 👈 Default value
+    gender:"male",                                         // 👈 Default value
+    hobby:[],                                              // 👈 Default value
+    country:"india",                                      // 👈 Default value
+    file:null,                                            // 👈 Default value
+  })
+```
+
+- 2. take all the required feilds.
+- 3. now set the `value` of each feild using `useState` object.
+
+📌for `text,number,date,select`
+```jsx
+value={form.name}
+```
+
+📌for `radio`
+```jsx
+checked={form.gender==="male"}
+```
+
+📌for `checkbox`
+```jsx
+checked={form.hobby.includes("reading")}
+```
+- 4. now set the `value` of each feild when user change it.
+
+📌for `text,number,date,select`
+
+```jsx
+onChange={(e)=>setForm({...form,__feild_name__:e.target.value})}
+```
+
+📌for `radio`
+
+```jsx
+onChange={(e)=>setForm({...form,gender:e.target.value})}
+```
+
+📌for `checkbox`
+
+```jsx
+onChange={handleHobby}
+
+const handleHobby=(e)=>{
+    const {value,checked}=e.target;
+    setForm((prev)=>{
+      if(checked){
+      // add item
+      if(!form.hobby.includes(value)){
+         return {...prev,hobby:[...prev.hobby,value]} 
+      }
+      // if already exists return previous state
+      return prev;
+    }else{
+      // remove item
+      return { ...prev, hobby:prev.hobby.filter((item)=>item!==value)}
+    }
+    })
+  }
+```
+
+📌for `file`
+
+```jsx
+onChange={(e)=>setForm({...form,file:e.target.files[0]})}
+```
+
+- 5. now for file set and get the file preview.
+```jsx
+    <label>
+          <img src={form.file ? URL.createObjectURL(form.file) : null} alt="no image" width={100} height="auto" style={{border:"1px solid black",marginTop:"10px"}} />
+          ......
+    </label>
+```
+
+- 6. Submit the form
+
+we create a function named `handleSubmit` and with the help of `button` we submit the form.
+
+```jsx
+const handleSubmit=(e)=>{
+    e.preventDefault();
+    console.log(form);
+  }  
+```
+
+- 7. Result
+
+```javascript
+{
+    "name": "Guest",
+    "age": 18,
+    "date": "2026-01-28",
+    "gender": "male",
+    "hobby": [
+        "traveling",
+        "sports"
+    ],
+    "country": "india",
+    "file": {
+      lastModified : 1769238595753,
+      lastModifiedDate : Sat Jan 24 2026 12:39:55 GMT+0530 (India Standard Time) {}
+      name : "inspect-page.png",
+      size : 70852,
+      type : "image/png",
+      webkitRelativePath: ""
+      } // 👈 type: File
+}
+
+```
+- 8. call the `Form` component inside `App.jsx`

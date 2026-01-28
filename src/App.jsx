@@ -9,6 +9,9 @@ import SimpleProps from "./components/SimpleProps"
 import AdvanceProps from "./components/AdvanceProps"
 import StudentInfoProps from "./components/StudentInfoProps"
 import FunctionEvent from "./components/FunctionEvent"
+import Counter from "./components/Counter"
+import LiveTextPrint from "./components/liveTextPrint"
+import Form from "./components/forms/Form"
 
 function App() {
 
@@ -61,7 +64,10 @@ function App() {
           <StudentInfoProps student_id={student_data.student_id} name={student_data.name} roll={student_data.roll} hobbies={student_data.hobbies} subjects={student_data.subjects}/>
         ))
       } */}
-      <FunctionEvent/>
+      {/* <FunctionEvent/> */}
+      {/* <Counter/> */}
+      {/* <LiveTextPrint/> */}
+      <Form/>
       <Footer/>
    </div>
   )
