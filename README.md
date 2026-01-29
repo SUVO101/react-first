@@ -22,6 +22,7 @@ hello, friends this is subhankar nath.today we are learn the react.so , react is
     - [useState()](#what-is-usestate)
     - [Form Handling](#form-handling)
     - [Todo App](#todo-app)
+    - [useRef()](#useref)
 
 
 
@@ -1666,4 +1667,66 @@ in react we use `className` instead of `class`.
 import styles from "./__file_name__.module.css"                  //👈 import file
 
 className={styles.__class_name__}                                 //👈 access class
+```
+
+## useRef()
+
+> `useRef` is a hook that allows you to `access` DOM elements or `manage` values that persist across re-renders.
+
+> An uncontrolled component stores its value in the DOM, not in React state.so, `useRef` is an uncontrolled component.
+
+| Feature | Controlled | Uncontrolled |
+| :--- | :--- | :--- |
+| Data stored in | React `state` | `DOM` |
+| Data access | through `state` | through `ref` |
+| Uses | `useState` | `useRef` |
+| Re-render | `Yes` | `No` |
+| Validation | Easy | Hard |
+| Controll | Full | Limited |
+| Common use | Forms, UI | `DOM access` |
+
+- useRef(): Used to store a mutable value that does NOT cause re-render.
+Syntax:
+```javascript
+const __variable__ = useRef(initialValue);
+```
+
+> to get the value we use `__variable__.current.value`.
+
+> to set the value we use `__variable__.current.value = value`.
+
+> to focus the input we use `__variable__.current.focus()`.
+
+> in react we use `ref={__variable__}` to access the DOM element.
+
+```jsx
+const UseRefState = () => {
+    const nameRef = useRef()
+    const emailRef = useRef()
+
+    
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(nameRef.current.value)
+        console.log(emailRef.current.value)
+        nameRef.current.focus()
+    }
+
+  return (
+    <div style={{padding:"20px",border:"1px solid black"}}>
+        <h2>useRef</h2>
+        <form onSubmit={handleSubmit}>
+            <label htmlFor="name">Name</label>
+            <input type="text" id="name" ref={nameRef} style={{margin:"10px"}}/><br/>
+
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" ref={emailRef} style={{margin:"10px"}}/><br/>
+
+            <button style={{margin:"10px"}}>Submit</button>
+        </form>
+    </div>
+  )
+}
+
+export default UseRefState
 ```
