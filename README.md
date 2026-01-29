@@ -21,6 +21,7 @@ hello, friends this is subhankar nath.today we are learn the react.so , react is
     - [Types of State](#types-of-state)
     - [useState()](#what-is-usestate)
     - [Form Handling](#form-handling)
+    - [Todo App](#todo-app)
 
 
 
@@ -1529,3 +1530,140 @@ const handleSubmit=(e)=>{
 
 ```
 - 8. call the `Form` component inside `App.jsx`
+
+## Todo App
+
+now we create a todo application based on the prevoius knowledge.
+<img src="./public/todoapp.png">
+
+- 1. create a `Todo.jsx` component inside `Projects` folder.
+- 2. create a `Todo.module.css` file inside `Projects` folder.
+- 3. paste the following code inside `Todo.jsx` file.
+```jsx
+import { useState } from "react";
+import styles from "./Todo.module.css"
+
+const Todo = () => {
+
+    const [todos,setTodos]=useState([]);
+    const [singleTodo,setSingleTodo]=useState("");
+    const [completed_count,setComepleted_count]=useState(0);
+
+    const handleSubmit=(e)=>{
+        e.preventDefault();
+        if(singleTodo){
+            setTodos([...todos,{todo:singleTodo,done:false}]);
+            setSingleTodo("");
+            //console.log(todos.length+1);
+        }
+    }
+
+    const handleDelete=(delete_index)=>{
+      const newTodos=todos.map((todo,index)=>index===delete_index?{...todo,done:!todo.done}:todo);
+      setTodos(newTodos);
+      const completedCount = todos.filter(todo => todo.done).length;
+      if(newTodos[delete_index].done){
+          setComepleted_count(completedCount+1);
+      }else{
+        setComepleted_count(completedCount-1);
+      }
+    }
+  return (
+    <div className={styles.parent_div}>
+        <div className={styles.child_div}>
+        <h2>Todo App</h2>
+        <hr />
+        <form onSubmit={handleSubmit} className={styles.form}>
+             <input type="text" value={singleTodo} onChange={(e)=>setSingleTodo(e.target.value)} />
+             <button type="submit" className={styles.add_btn}>Add</button>
+             <span>✅: {completed_count}</span>
+             <span>❌: {todos.length-completed_count}</span>
+        </form>
+        <ul className={styles.todo_ul}>
+            {
+                todos.map((todo,index)=>(
+                    <li key={index}>
+                        {todo.todo} -  {todo.done?<span>✅</span>:<span>❔</span>} - 
+                        <button onClick={()=>handleDelete(index)} className={todo.done?styles.undo_btn:styles.done_btn}>
+                            {todo.done?<span>undo</span>:<span>done</span>}
+                        </button>
+                    </li>
+                ))
+            }
+        </ul>
+        </div>
+    </div>
+  )
+}
+
+export default Todo
+```
+
+> we need three state variables to store the data.
+
+- `todos` : store the todos.
+- `singleTodo` : store the single todo.
+- `completed_count` : store the completed todos count.
+
+> and take a form to add the todos. then call the `handleSubmit` function on form submit.
+
+> 📌 Logic behind `handleSubmit` function.<br>first, we prevent the default behavior of the form<br> then we check if the `singleTodo` is not empty then we add the todo to the `todos` array, as an object with `todo` and `done` properties.<br> and also reset the `singleTodo`. 
+
+> 📌 Logic behind `handleDelete` function.<br>first, we prevent the default behavior of the form <br> then toggle the `done` value of the todo to be deleted <br> then update the new array.<br> and also update the `completed_count` .
+
+
+- 4. paste the following code inside `Todo.module.css` file.
+```css
+.parent_div{
+    padding:10px;
+    border:1px solid gray;
+}
+.child_div{
+    border:1px solid black;
+    padding:10px;
+    border-radius:10px;
+    width:40%;
+    margin:0 auto;
+}
+.form{
+    display:flex;
+    justify-content: center;
+    gap:10px;
+}
+.add_btn{
+    padding:5px;
+    border-radius:5px;
+    border:none;
+    background-color: green;
+    color:white;
+}
+.undo_btn{
+    padding:5px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: yellow;
+    color:black;
+}
+.done_btn{
+    padding:5px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: greenyellow;
+    color:black;
+}
+```
+
+> for css, we use `styles` variable to access the css file.
+like -
+```
+<div className={styles.parent_div}>
+```
+in react we use `className` instead of `class`.
+- Syntax:
+```javascript
+import styles from "./__file_name__.module.css"                  //👈 import file
+
+className={styles.__class_name__}                                 //👈 access class
+```

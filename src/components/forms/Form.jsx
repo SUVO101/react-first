@@ -37,19 +37,22 @@ const Form = () => {
 
   return (
     <div style={{ padding: "10px", border: "1px solid gray" }}>
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <br/>
+        <label className={styles.label}>
             Enter Name: 
             <input 
+            className={styles.input}  
               type="text"
               name="name" 
               value={form.name} 
               onChange={(e)=>setForm({...form,name:e.target.value})}/>
         </label>
         <br />
-        <label>
+        <label className={styles.btn}>
             Enter Age: 
             <input 
+            className={styles.input}  
               type="number" 
               min={18}
               max={80}
@@ -58,9 +61,10 @@ const Form = () => {
             />
         </label>
         <br />
-        <label>
+        <label className={styles.btn}>
             Enter D.O.B: 
             <input 
+            className={styles.input}  
               type="date" 
               name="date"
               value={form.date} 
@@ -68,9 +72,10 @@ const Form = () => {
             />
         </label>
         <br />
-        <label>
+        <label className={styles.btn}>
             Select Gender: 
           <input 
+          className={styles.input}  
             type="radio" 
             name="gender" 
             value="male" 
@@ -79,6 +84,7 @@ const Form = () => {
             />
           Male
           <input 
+          className={styles.input}  
             type="radio" 
             name="gender" 
             value="female" 
@@ -88,9 +94,10 @@ const Form = () => {
           Female
         </label>
         <br />
-        <label>
+        <label className={styles.btn}>
             Select Hobbies: 
           <input 
+          className={styles.input}  
             type="checkbox" 
             name="hobby" 
             value="reading" 
@@ -99,6 +106,7 @@ const Form = () => {
           />
           Reading
           <input 
+          className={styles.input}  
             type="checkbox" 
             name="hobby" 
             value="traveling"
@@ -107,6 +115,7 @@ const Form = () => {
            />
           Traveling
           <input 
+            className={styles.input}  
             type="checkbox" 
             name="hobby" 
             value="sports" 
@@ -116,7 +125,7 @@ const Form = () => {
           Sports
         </label>
         <br />
-        <label>
+        <label className={styles.btn}>
             Select Country: 
           <select name="country" value={form.country} onChange={(e)=>setForm({...form,country:e.target.value})}>
             <option value="india">India</option>
@@ -125,13 +134,13 @@ const Form = () => {
           </select>
         </label>
         <br />
-        <label>
+        <label className={styles.btn}>
           <img src={form.file ? URL.createObjectURL(form.file) : null} alt="no image" width={100} height="auto" style={{border:"1px solid black",marginTop:"10px"}} />
           <input type="file" name="file" accept='image/*' onChange={(e)=>setForm({...form,file:e.target.files[0]})}/>
         </label>
         <br />
         <div className={styles.btn}>
-            <button type="submit">Submit</button>
+            <button type="submit" className={styles.button}>Submit</button>
         </div>
       </form>
     </div>

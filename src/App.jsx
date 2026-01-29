@@ -12,6 +12,7 @@ import FunctionEvent from "./components/FunctionEvent"
 import Counter from "./components/Counter"
 import LiveTextPrint from "./components/liveTextPrint"
 import Form from "./components/forms/Form"
+import Todo from "./components/Projects/Todo"
 
 function App() {
 
@@ -67,7 +68,8 @@ function App() {
       {/* <FunctionEvent/> */}
       {/* <Counter/> */}
       {/* <LiveTextPrint/> */}
-      <Form/>
+      {/* <Form/> */}
+      <Todo/>
       <Footer/>
    </div>
   )

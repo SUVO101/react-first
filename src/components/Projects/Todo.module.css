@@ -1,0 +1,43 @@
+.todo_ul{
+    list-style:none;
+    text-align: center;
+}
+.parent_div{
+    padding:10px;
+    border:1px solid gray;
+}
+.child_div{
+    border:1px solid black;
+    padding:10px;
+    border-radius:10px;
+    width:40%;
+    margin:0 auto;
+}
+.form{
+    display:flex;
+    justify-content: center;
+    gap:10px;
+}
+.add_btn{
+    padding:5px;
+    border-radius:5px;
+    border:none;
+    background-color: green;
+    color:white;
+}
+.undo_btn{
+    padding:5px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: yellow;
+    color:black;
+}
+.done_btn{
+    padding:5px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: greenyellow;
+    color:black;
+}
