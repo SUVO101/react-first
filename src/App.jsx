@@ -14,6 +14,8 @@ import LiveTextPrint from "./components/liveTextPrint"
 import Form from "./components/forms/Form"
 import Todo from "./components/Projects/Todo"
 import UseRefState from "./components/useRefState"
+import UseEffect from "./components/useEffect"
+import Timer from "./components/Timer"
 
 function App() {
 
@@ -71,7 +73,9 @@ function App() {
       {/* <LiveTextPrint/> */}
       {/* <Form/> */}
       {/* <Todo/> */}
-      <UseRefState/>
+      {/* <UseRefState/> */}
+      {/* <UseEffect/> */}
+      <Timer/>
       <Footer/>
    </div>
   )

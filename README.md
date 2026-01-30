@@ -23,6 +23,12 @@ hello, friends this is subhankar nath.today we are learn the react.so , react is
     - [Form Handling](#form-handling)
     - [Todo App](#todo-app)
     - [useRef()](#useref)
+    - [useEffect()](#useeffect)
+    - [Timer](#timer)
+    - [Important Notes](#important-notes)
+    - [What is React Strict Mode?](#what-is-react-strict-mode)
+    - [React LifeCycle](#react-lifecycle)
+    - [Cleanup Function](#cleanup-function)
 
 
 
@@ -1699,6 +1705,8 @@ const __variable__ = useRef(initialValue);
 
 > in react we use `ref={__variable__}` to access the DOM element.
 
+> 📌📌 We basically create a `reference variable` using useRef() hook.
+
 ```jsx
 const UseRefState = () => {
     const nameRef = useRef()
@@ -1730,3 +1738,694 @@ const UseRefState = () => {
 
 export default UseRefState
 ```
+
+## useEffect()
+
+> `useEffect()` is a special type of hooks that runs `😀automatically` when the component is `rendered`. `rendered` means when the component is `return HTML` from the function.
+
+> `useEffect` is a hook that allows you to perform `side effects` in function components.
+
+> `Side effects` are operations that occur outside of the component's normal flow, such as data fetching, subscriptions, or manually changing the DOM.
+
+<img src="./public/useEffect.png">
+
+### Runs Every Render
+
+> `useEffect` runs every time when the component is rendered `if` we don't pass any dependency array.
+
+```jsx
+import { useEffect, useState } from 'react'
+
+const UseEffect = () => {
+    const [count,setCount]=useState(0);
+
+    useEffect(()=>{
+        console.log(count);
+    })
+  return (
+    <div>
+        <button onClick={()=>setCount(count+1)}>Count:{count}</button>
+    </div>
+  )
+}
+
+export default UseEffect
+
+```
+
+> for every click the component is rendered and erery time useEffect is called.
+
+> Output: 
+
+```
+0
+1
+2
+3
+... so on
+```
+
+### Run Only Once
+
+> `useEffect` runs only once when the component is rendered `if` we pass an empty dependency array.
+
+- just `add an empty array` after callback function in `useEffect()`.
+
+```jsx
+ useEffect(
+        ()=>{
+              console.log(count);
+          }
+            ,
+          []                     // 👈 empty dependency array
+    );
+```
+
+> Output: 
+
+```
+0
+```
+
+### Run with dependency
+
+> `useEffect` runs every time when the dependency changes.
+
+- just `add the dependency` after callback function in `useEffect()`.
+> which means useEffect function `depends on the count variable`. 
+
+- if count `changes` then useEffect is `called`. 
+- but if any variable `without` count is changed then useEffect is `not called`.
+
+```jsx
+ useEffect(
+        ()=>{
+              console.log(count);
+          }
+            ,
+          [count]                 // 👈 dependency array
+    );
+```
+
+> Output: 
+
+```
+0
+1
+2
+3
+... so on
+```
+
+### Dom manipulation with useEffect()
+
+> we can `change the title of the page` using `useEffect()`.<br> using useEffect we can `manipulate the DOM` like change `the style` , `innerHTML` , `innerText` or `any js code` etc.
+
+```jsx
+useEffect(()=>{
+        console.log(count);
+        document.title=`Count:${count}`; // 👈 dom manipulation
+    },[count]);
+```
+
+### Timer
+create a component `Timer.jsx`
+
+```jsx
+
+import { useEffect, useState } from 'react'
+
+const Timer = () => {
+  const [sec,setSec]=useState(0);
+  
+     useEffect(()=>{
+        const interval=setInterval(()=>{
+            //setSec(sec+1);
+            setSec((prev)=>prev+1);
+        },1000);  
+        
+        return ()=>{
+            clearInterval(interval);
+        } 
+      },[]);
+  
+    return (
+      <div>
+          <p>{sec}</p>
+      </div>
+    )
+}
+
+export default Timer
+```
+
+---
+---
+
+#### Important Notes
+
+> 1️⃣ Why setSec(sec + 1) does NOT work in setInterval
+
+```jsx
+❌ Your code (problem)
+setInterval(() => {
+  setSec(sec + 1);
+}, 1000);
+```
+
+🧠 The REAL reason (very important)
+
+- 👉 setInterval creates a closure
+- 👉 React remembers the OLD value of sec
+- 👉 sec becomes stuck at initial value (0)
+
+> So every time:
+
+- sec = 0
+- setSec(0 + 1)
+
+
+💥 Result:
+
+- State updates to 1
+-Next second → STILL 0 + 1
+
+So it looks like it’s not increasing
+
+2️⃣ Why setSec((prev) => prev + 1) WORKS ✅
+
+```jsx
+✅ Correct code
+setInterval(() => {
+  setSec((prev) => prev + 1);
+}, 1000);
+```
+
+🧠 Why this works
+
+React gives you the latest state value using prev.
+
+- prev = 0 → 1
+- prev = 1 → 2
+- prev = 2 → 3
+
+
+🔥 No stale value
+🔥 No closure problem
+
+> ⭐ IMPORTANT RULE (Remember this)
+
+When new state depends on previous state → ALWAYS use callback form
+
+```jsx
+setState(prev => prev + 1);
+```
+
+> 3️⃣ Why does it increase +2 instead of +1? 😱
+
+This is the part that confuses EVERYONE 👀
+And the reason is…
+
+**⚠️ React 18 Strict Mode (DEV ONLY)**
+
+❓ What happens?
+
+In development mode, React runs effects TWICE to find bugs.
+
+📌 Your effect:
+
+```jsx
+useEffect(() => {
+  const interval = setInterval(() => {
+    setSec(prev => prev + 1);
+  }, 1000);
+}, []);
+```
+
+React runs it two times, so:
+
+- Interval #1 → +1
+- Interval #2 → +1
+
+👉 Total = +2 every second
+
+
+> 4️⃣ How to FIX the +2 problem ✅
+
+🛠️ Always clear interval
+
+```jsx
+useEffect(() => {
+  const interval = setInterval(() => {
+    setSec(prev => prev + 1);
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, []);
+```
+> 5️⃣ Why cleanup is mandatory 🚨
+
+- Without cleanup:
+
+- Multiple intervals run
+
+- Memory leak
+
+- Faster counter
+
+- Unexpected behavior
+
+---
+---
+
+#### What is React Strict Mode?
+
+StrictMode is a development-only helper tool in React.
+
+- 👉 It does NOT affect production
+- 👉 It does NOT show anything in UI
+- 👉 It only helps developers find bugs early
+
+🔹 How we use it
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+```
+✅ Main Uses of Strict Mode
+
+> <br>1️⃣ Detects unsafe lifecycle & bad practices 🚨
+> <br>.
+
+React checks for:
+
+-Old / unsafe methods
+-Code that may break in future React versions
+
+📌 Example:
+
+```jsx
+componentWillMount() ❌
+```
+
+React warns you:
+
+> “This lifecycle is unsafe”
+
+> <br>2️⃣ Finds side-effect bugs (MOST IMPORTANT 🔥)
+> <br>.
+
+StrictMode runs some things twice (only in dev):
+
+- useEffect
+- useState initializers
+- Component render
+
+❓ Why twice?
+
+To check:
+
+- Are you mutating state?
+- Are you forgetting cleanup?
+- Are effects safe?
+
+Example:
+```jsx
+useEffect(() => {
+  console.log("Effect running");
+}, []);
+```
+
+
+👀 Console output in DEV:
+
+```
+Effect running
+Effect running
+```
+
+
+👉 React is testing if your code is pure and safe
+
+> <br>3️⃣ Helps detect missing cleanup (interval, event, API)
+> <br>.
+
+```jsx
+❌ Bad code
+useEffect(() => {
+  setInterval(() => {
+    console.log("tick");
+  }, 1000);
+}, []);
+```
+
+
+💥 Problem:
+
+- Interval keeps running
+
+- Memory leak
+
+✅ StrictMode exposes this bug
+
+Because it runs effect twice → you see double logs / double speed
+
+👉 You realize:
+
+- “Oh! I forgot cleanup”
+
+✅ Correct code
+```jsx
+useEffect(() => {
+  const id = setInterval(() => {
+    console.log("tick");
+  }, 1000);
+
+  return () => clearInterval(id);
+}, []);
+```
+> <br>4️⃣ Detects state mutation bugs 🧨
+> <br>.
+
+❌ Mutating state
+```jsx
+state.count++;
+setState(state);
+```
+- StrictMode warns you because:
+- React state must be immutable
+- Mutation causes unpredictable bugs
+
+> <br>5️⃣ Prepares your app for future React features 🚀
+> <br>.
+
+StrictMode checks:
+
+- Concurrent rendering safety
+- Future React optimizations
+- Async rendering compatibility
+
+📌 Your app becomes future-proof
+
+> <br>6️⃣ Helps beginners learn correct React habits 🎓
+> <br>.
+
+React forces you to:
+
+- Write clean useEffect
+- Use functional updates
+- Avoid side effects in render
+- Think immutably
+
+👉 Like a strict teacher in class 😄
+
+---
+---
+
+### React LifeCycle
+
+<img src="./public/React_lifecycle.webp">
+
+
+> <br>1️⃣ What is React Lifecycle? (Definition)
+
+👉 React Lifecycle means
+the different stages a component goes through from:
+
+```
+Creation → Update → Removal
+```
+
+Just like human life:
+
+```
+Born → Grow → Die 😄
+```
+
+2️⃣ React Lifecycle Phases
+
+React component lifecycle has 3 main phases:
+
+| Phase | Meaning |
+| :--- | :--- |
+| 🟢 Mounting | Component is created |
+| 🔵 Updating | Component data changes |
+| 🔴 Unmounting | Component is removed |
+
+> <br>🟢 1. **Mounting Phase** (Component is born)<br>. 
+
+When does this happen?
+
+- Component is added to the DOM
+- Page loads
+- Component is rendered first time
+
+✅ Example (Functional Component)
+
+```jsx
+useEffect(() => {
+  console.log("Component Mounted");
+}, []);
+```
+
+- 📌 Empty dependency array []
+- 👉 Runs only once
+
+> <br>🔵 2. **Updating Phase** (Component grows)<br>.
+
+When does this happen?
+
+- State changes
+- Props change
+- Re-render happens
+
+Example
+```jsx
+useEffect(() => {
+  console.log("Component Updated");
+```
+
+👉 Runs when count changes
+
+> <br>🔴 3. **Unmounting Phase** (Component dies)<br>.
+
+When does this happen?
+
+- Component removed from UI
+- Page change
+- Conditional rendering false
+
+use **`👉cleanup function`**
+
+Example
+```jsx
+useEffect(() => {
+  return () => {                                  // 👈 cleanup function
+    console.log("Component Unmounted");
+  };
+}, []);
+```
+
+```
+Mount
+ ↓
+Render
+ ↓
+useEffect (Mount)
+ ↓
+State / Props change
+ ↓
+Re-render
+ ↓
+useEffect (Update)
+ ↓
+Component removed
+ ↓
+Cleanup (Unmount)
+```
+- Example
+```jsx
+useEffect(() => {
+  console.log("Mounted");                                  //👈 1️⃣
+
+  return () => {
+    console.log("Unmounted");                             //👈 3️⃣
+  };
+}, []);
+
+
+useEffect(() => {
+  console.log("Updated");                                 //👈 2️⃣
+}, [count]);
+```
+
+---
+---
+
+### Cleanup Function
+
+> <br>1️⃣ Definition (Simple)<br>.
+
+👉 A cleanup function is a function that React runs
+
+- before a component unmounts OR
+- before useEffect runs again
+
+📌 It is used to clean or stop side effects.
+
+> <br>2️⃣ Where does cleanup function exist?<br>.
+
+- 👉 Inside useEffect
+- 👉 It is returned from useEffect
+
+```jsx
+useEffect(() => {
+  // side effect here
+
+  return () => {
+    // cleanup code here
+  };
+}, []);
+```
+> <br>3️⃣ Why do we need a cleanup function? (Uses)<br>.
+
+✅ To stop:
+
+- setInterval
+- setTimeout
+- Event listeners
+- API subscriptions
+- WebSocket connections
+- Memory leaks
+
+👉 Basically: Anything that keeps running
+
+> <br>4️⃣ What happens if we don’t use cleanup? ❌<br>.
+
+- App becomes slow
+- Multiple intervals run
+- Same event fires many times
+- Memory leak
+- Bugs in StrictMode
+
+> <br>5️⃣ When does cleanup function run? ⏰<br>.
+
+|Situation	|Cleanup Runs?|
+|-|:---|
+| Component unmounts	|✅ Yes|
+| Dependency changes	|✅ Yes|
+| StrictMode (dev)	|✅ Yes|
+| Production render	|Only when needed|
+
+> <br>6️⃣ Example 1: setInterval ⏱️ (Most common)<br>.
+
+❌ Without cleanup (wrong)
+```jsx
+useEffect(() => {
+  setInterval(() => {
+    console.log("Running...");
+  }, 1000);
+}, []);
+```
+
+💥 Problem:
+
+- Interval never stops
+- Runs multiple times
+
+✅ With cleanup (correct)
+
+```jsx
+useEffect(() => {
+  const interval = setInterval(() => {
+    console.log("Running...");
+  }, 1000);
+
+  return () => {
+    clearInterval(interval);
+  };
+}, []);
+```
+
+> <br>7️⃣ Example 2: Event Listener 🎧<br>.
+
+❌ Wrong
+```jsx
+useEffect(() => {
+  window.addEventListener("resize", handleResize);
+}, []);
+```
+
+💥 Every render adds new listener
+
+✅ Correct
+```jsx
+useEffect(() => {
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    window.removeEventListener("resize", handleResize);
+  };
+}, []);
+```
+
+> <br>8️⃣ Example 3: API Subscription / WebSocket 🌐<br>.
+
+```jsx
+useEffect(() => {
+  const socket = new WebSocket("ws://example.com");
+
+  return () => {
+    socket.close();
+  };
+}, []);
+```
+
+👉 Prevents unnecessary network usage
+
+> <br>9️⃣ Example 4: Timeout ⏲️<br>.
+```jsx
+useEffect(() => {
+  const timeout = setTimeout(() => {
+    console.log("Hello");
+  }, 3000);
+
+  return () => {
+    clearTimeout(timeout);
+  };
+}, []);
+```
+
+> <br>🔟 What cleanup function should NOT do ❌<br>.
+
+- ❌ Update state unnecessarily
+- ❌ Make API calls
+- ❌ Contain heavy logic
+- 👉 Keep it simple & clean
+
+🧠 Easy Analogy 😄
+
+Imagine:
+
+- useEffect = switch ON fan
+- Cleanup function = switch OFF fan
+
+Leaving room without switching off = ❌ waste + danger
+
+
+🧠 Interview-Ready Summary ⭐
+🔹 Definition:
+- Cleanup function removes side effects created by useEffect.
+
+🔹 Use:
+- Prevent memory leaks and unwanted behavior.
+
+🔹 Syntax:
+- return () => { /* cleanup */ };
