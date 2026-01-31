@@ -1882,6 +1882,78 @@ export default Timer
 ---
 ---
 
+### Windows Width Tracker
+its another example of useEffect()
+
+```jsx
+import { useEffect, useState } from 'react'
+
+const WindowsWidthTracker = () => {
+    const [width,setWidth]=useState(window.innerWidth);
+    useEffect(()=>{
+        const handleWidth=()=>{
+            setWidth(window.innerWidth);
+        }
+        window.addEventListener('resize',handleWidth);
+        return ()=>{    
+            window.removeEventListener('resize',handleWidth);
+        }
+
+    },[])
+  return (
+    <div>
+        <h1>Windows Width Tracker</h1>  
+        <p>Current Width: {width}</p>
+    </div>
+  )
+}
+
+export default WindowsWidthTracker
+```
+> we need [👉clean up](#cleanup-function) function to remove `double effect` of useEffect.
+
+```jsx
+return ()=>{    
+            window.removeEventListener('resize',handleWidth);
+        }
+```
+
+---
+---
+
+### Users information show
+
+its another example of `useEffect()`
+
+```jsx
+import { useEffect, useState } from 'react'
+
+const Users = () => {
+    const [users,setUsers]=useState([]);
+
+    useEffect(()=>{
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(res=>res.json())
+        .then(data=>setUsers(data))
+    },[])
+  return (
+    <div>
+        {users.map((user)=>(
+            <div key={user.id}>
+                <h2>{user.name}</h2>
+                <p>{user.email}</p>
+            </div>
+        ))}
+    </div>
+  )
+}
+
+export default Users
+```
+
+---
+---
+
 #### Important Notes
 
 > 1️⃣ Why setSec(sec + 1) does NOT work in setInterval

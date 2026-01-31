@@ -16,6 +16,8 @@ import Todo from "./components/Projects/Todo"
 import UseRefState from "./components/useRefState"
 import UseEffect from "./components/useEffect"
 import Timer from "./components/Timer"
+import WindowsWidthTracker from "./components/WindowsWidthTracker"
+import Users from "./components/Users"
 
 function App() {
 
@@ -75,7 +77,9 @@ function App() {
       {/* <Todo/> */}
       {/* <UseRefState/> */}
       {/* <UseEffect/> */}
-      <Timer/>
+      {/* <Timer/> */}
+      {/* <WindowsWidthTracker/> */}
+      <Users/>
       <Footer/>
    </div>
   )
