@@ -29,6 +29,7 @@ hello, friends this is subhankar nath.today we are learn the react.so , react is
     - [What is React Strict Mode?](#what-is-react-strict-mode)
     - [React LifeCycle](#react-lifecycle)
     - [Cleanup Function](#cleanup-function)
+    - [React Router](#react-router)
 
 
 
