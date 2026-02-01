@@ -2501,3 +2501,280 @@ Leaving room without switching off = ❌ waste + danger
 
 🔹 Syntax:
 - return () => { /* cleanup */ };
+
+
+## React Router
+
+<img src="./public//react-router.png">
+
+React Router DOM is a library used in React to handle **navigation and routing** in single-page applications (SPA).
+
+---
+
+### 📌 What is Routing?
+
+Routing means:
+- Showing different pages
+- Changing URL
+- Without reloading the whole page
+
+Example:
+- `/` → Home page
+- `/about` → About page
+- `/contact` → Contact page
+
+In React, routing is handled by **react-router-dom**.
+
+---
+
+### 📦 Why do we need react-router-dom?
+
+Without react-router:
+- React app shows only **one page**
+- URL change reloads the page (bad UX)
+
+With react-router:
+- Multiple pages
+- Fast navigation
+- No page reload
+- SPA behavior
+
+---
+
+### ⚙️ Installation
+
+```bash
+npm install react-router-dom
+```
+
+### 🧠 Core Components of react-router-dom
+|Component|Use|
+|---|---|
+|BrowserRouter|Wraps the app|
+|Routes|Holds all routes|
+|Route|Defines a path|
+|Link|Navigate without reload|
+|NavLink|Link with active style|
+|useParams|Get URL parameters|
+|useNavigate|Navigate programmatically|
+
+### 💻 Programming
+
+- 1. Example Folder Structure
+
+```jsx
+src/
+ ├─ pages/
+ │   ├─ Home.jsx
+ │   ├─ About.jsx
+ │   └─ Contact.jsx
+ ├─ App.jsx
+ └─ main.jsx
+ ```
+
+ - 2. Basic Routing
+
+ go to `main.jsx` and paste the below code.
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
+  </StrictMode>,
+);
+```
+>It is the main wrapper for routing.<br>
+>👉 Without this, routing will not work.
+
+- 3. Setup path / Route
+
+Go to `App.jsx` and paste the below code.
+
+```jsx
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Users from "./pages/Users";
+import Footer from "./components/Footer";
+function App() {
+  return (
+    <>
+      <Header/>
+
+      <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/users" element={<Users/>}/>
+          <Route path="/about" element={<About/>}/>
+          <Route path="/contact" element={<Contact/>}/>
+      </Routes>
+
+      <Footer/>
+    </>
+  );
+}
+
+export default App;
+
+```
+
+- 4. Add Link 
+
+go to `Header.jsx` and paste the below code.
+
+```jsx
+import { Link } from "react-router-dom"
+
+const Header = () => {
+  return (
+    <div style={{backgroundColor: "#a9dff5ff", padding: "10px",border: "1px solid #ccc",display: "flex", justifyContent: "space-between"}}>
+        <h1>Header</h1>
+        <ul style={{display: "flex", gap: "15px", listStyle: "none"}}>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/users">Users</Link></li>
+        </ul>
+    </div>
+  )
+}
+
+export default Header
+```
+
+- 5. for 404 page
+
+we have to create a universal route. and a component.
+> 1. define a route inside `app.jsx`
+```jsx
+      <Routes>
+           .......
+           <Route path="*" element={<NotFound404/>}/>
+      </Routes>
+```
+> 2. create a component named `NotFound404.jsx` inside `pages` folder.
+
+
+- 6. Data pass through URL
+
+> define routes in `app.jsx` and pass data through URL
+```jsx
+      <Routes>
+           .......
+           <Route path="/user/profile/:id" element={<User/>}/>
+      </Routes>
+```
+> then create a component named `User.jsx` inside `pages` folder although i am creating it inside `app.jsx`.
+```jsx
+const User=()=>{
+    const {id}=useParams();
+    //console.log(id);
+    return (
+        <div>
+            <h1>User Profile</h1>
+            <p>User ID: {id}</p>
+        </div>
+    )
+}
+```
+
+- 7. Nested Routes
+
+> first create a component named `Products.jsx` inside `pages` folder.
+```jsx
+import { NavLink, Outlet } from 'react-router-dom'
+
+const Products = () => {
+
+  return (
+    <div>
+        <h2>Products Page</h2>
+        <ul>
+            <li><NavLink 
+            to="mobiles" 
+            style={({ isActive }) => ({
+                color: isActive ? "red" : "black",
+                fontWeight: isActive ? "bold" : "normal"
+            })}
+            >Mobiles</NavLink></li>
+            <li><NavLink 
+            to="laptops"
+            style={({ isActive }) => ({
+                color: isActive ? "red" : "black",
+                fontWeight: isActive ? "bold" : "normal"
+            })}
+            >Laptops</NavLink></li>
+        </ul>
+
+        <Outlet/>
+
+    </div>
+  )
+}
+
+export default Products
+```
+- here we create the nested link for different products.
+- `Outlet` is a Component which is used to render the nested components.
+- here i use `NavLink` instead of `Link` to add style to the active link.
+
+
+> then create a component named `Mobiles.jsx` and `Laptop.jsx` inside `pages` folder.
+```jsx
+import React from 'react'
+
+const Mobiles = () => {
+  return (
+    <div>
+        <h2>Here are the Top Mobiles</h2>
+        <ul>
+            <li>Apple iphone 17</li>
+            <li>Samsung Galaxy S23</li>
+            <li>OnePlus Nord 2</li>
+        </ul>
+    </div>
+  )
+}
+
+export default Mobiles
+```
+
+and
+```jsx
+import React from 'react'
+
+const Laptop = () => {
+  return (
+    <div>
+        <h2>Here are the Top Laptops</h2>
+        <ul>
+            <li>Apple Macbook Pro</li>
+            <li>Samsung Galaxy Tab</li>
+            <li>Lenevo Thinkpad</li>
+        </ul>
+    </div>
+  )
+}
+
+export default Laptop
+```
+
+> define routes inside `app.jsx`
+```jsx
+      <Routes>
+           .......
+           <Route path="/products" element={<Products/>}>
+               <Route path="mobiles" element={<Mobiles/>}/>
+               <Route path="laptops" element={<Laptop/>}/>
+               ......
+          </Route>
+          .......
+      </Routes>
+```

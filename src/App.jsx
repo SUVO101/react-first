@@ -18,6 +18,14 @@ import UseEffect from "./components/useEffect"
 import Timer from "./components/Timer"
 import WindowsWidthTracker from "./components/WindowsWidthTracker"
 import Users from "./components/Users"
+import About from "./components/pages/About"
+import Contact from "./components/pages/Contact"
+import { BrowserRouter,Routes,Route, useParams } from "react-router-dom"
+import Home from "./components/pages/Home"
+import NotFound404 from "./components/pages/NotFound404"
+import Products from "./components/pages/Products"
+import Mobiles from "./components/pages/Mobiles"
+import Laptop from "./components/pages/Laptop"
 
 function App() {
 
@@ -57,8 +65,20 @@ function App() {
   //   }
   // ]
 
+  const User=()=>{
+      const {id}=useParams();
+      //console.log(id);
+      return (
+        <div>
+            <h1>User Profile</h1>
+            <p>User ID: {id}</p>
+        </div>
+      )
+  }
+
   return (
-   <div>
+  //  <BrowserRouter>
+        <>
       <Header/> 
       {/* <Body/> */}
       {/* <ConditionalRendering/> */}
@@ -79,9 +99,23 @@ function App() {
       {/* <UseEffect/> */}
       {/* <Timer/> */}
       {/* <WindowsWidthTracker/> */}
-      <Users/>
+      <Routes>
+          {/* <Route path="/" element={<App/>}/> */}
+          <Route path="/" element={<Home/>}/>
+          <Route path="/users" element={<Users/>}/>
+          <Route path="/about" element={<About/>}/>
+          <Route path="/contact" element={<Contact/>}/>
+          <Route path="/products" element={<Products/>}>
+            <Route path="mobiles" element={<Mobiles/>}/>
+            <Route path="laptops" element={<Laptop/>}/>
+          </Route>
+          <Route path="/user/profile/:id" element={<User/>}/>
+          <Route path="*" element={<NotFound404/>}/>
+      </Routes>
+
       <Footer/>
-   </div>
+   {/* </BrowserRouter> */}
+  </>
   )
 }
 
